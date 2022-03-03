@@ -1,4 +1,4 @@
-module github/wlhet/orm
+module github.com/wlhet/orm
 
 go 1.17
 
