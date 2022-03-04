@@ -18,6 +18,7 @@ import (
 	"fmt"
 	"reflect"
 	"strings"
+	"time"
 )
 
 // oracle operators.
@@ -153,4 +154,19 @@ func (d *dbBaseOracle) ReplaceMarks(query *string) {
 	tmp = strings.Replace(tmp, "LIMIT", "AND ROWNUM <=", 1)
 	qptrV := reflect.ValueOf(query)
 	qptrV.Elem().SetString(tmp)
+}
+
+// convert time from db.
+func (d *dbBaseOracle) TimeFromDB(t *time.Time, tz *time.Location) {
+	tadd, _ := time.ParseDuration("-8h")
+	tz, _ = time.LoadLocation("Asia/Shanghai")
+	*t = t.Add(tadd).In(tz)
+
+}
+
+// convert time to db.
+func (d *dbBaseOracle) TimeToDB(t *time.Time, tz *time.Location) {
+	tadd, _ := time.ParseDuration("8h")
+	*t = t.Add(tadd).In(tz)
+
 }
